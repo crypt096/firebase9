@@ -35,3 +35,15 @@ getDocs(colRef)
   .catch(err => {
     console.error(err.meesage);
   });
+
+// Adding documents
+const addBookForm = document.querySelector('.add');
+addBookForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+});
+
+// Deleting documents
+const deleteBookForm = document.querySelector('.delete');
+deleteBookForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+});
