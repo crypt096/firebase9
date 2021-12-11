@@ -17,6 +17,7 @@ import {
   signOut,
   signInWithEmailAndPassword,
   onAuthStateChanged,
+
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -42,7 +43,7 @@ const colRef = collection(db, 'books');
 const q = query(colRef, orderBy('createdAt'));
 
 // Get real time collection data
-onSnapshot(q, (snapshot) => {
+const unsubCol = onSnapshot(q, (snapshot) => {
   let books = [];
   snapshot.docs.forEach(doc => {
     books.push({ ...doc.data(), id: doc.id });
@@ -78,7 +79,7 @@ deleteBookForm.addEventListener('submit', (e) => {
 
 // Get single document
 const docRef = doc(db, 'books', 'wJeNvSsqTsv3FfaciREn');
-onSnapshot(docRef, (snapshot) => {
+const unsubDoc = onSnapshot(docRef, (snapshot) => {
   console.log(snapshot.data(), snapshot.id);
 });
 
@@ -144,6 +145,15 @@ loginForm.addEventListener('submit', (e) => {
 });
 
 // Subscribe to auth state changes
-onAuthStateChanged(auth, (user) => {
+const unsubAuth = onAuthStateChanged(auth, (user) => {
   console.log('user state changed', user);
+});
+
+// Unsubscribe from auth state changes
+const unsubButton = document.querySelector('.unsub');
+unsubButton.addEventListener('click', (e) => {
+  console.log('unsubscribing');
+  unsubCol();
+  unsubDoc();
+  unsubAuth();
 });
