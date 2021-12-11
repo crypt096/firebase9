@@ -12,7 +12,8 @@ import {
   updateDoc
 } from 'firebase/firestore';
 import { 
-  getAuth 
+  getAuth,
+  createUserWithEmailAndPassword
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -90,4 +91,22 @@ updateBookForm.addEventListener('submit', (e) => {
   }).then(() => {
     updateBookForm.reset()
   })
+});
+
+// Signing users up
+const signupForm = document.querySelector('.signup');
+signupForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const email = signupForm.email.value;
+  const password = signupForm.password.value;
+
+  createUserWithEmailAndPassword(auth, email, password)
+  .then((cred) => {
+    console.log('user created', cred.user);
+    signupForm.reset();
+  })
+  .catch((err) => {
+    console.log(err.message)
+  });
 });
